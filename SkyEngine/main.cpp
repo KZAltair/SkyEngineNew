@@ -1,5 +1,20 @@
 #include <Windows.h>
 
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+        case WM_CLOSE:
+        {
+            PostQuitMessage(69);
+            break;
+        }
+    }
+
+    return DefWindowProc(hwnd, msg, wParam, lParam);
+}
+
 int CALLBACK WinMain(
     HINSTANCE hInst,
     HINSTANCE hPrevInst,
@@ -17,7 +32,7 @@ int CALLBACK WinMain(
     wc.hIcon = nullptr;
     wc.hIconSm = nullptr;
     wc.hInstance = hInst;
-    wc.lpfnWndProc = DefWindowProc;
+    wc.lpfnWndProc = WndProc;
     wc.lpszClassName = pClassName;
     wc.style = CS_OWNDC;
     wc.lpszMenuName = nullptr;
@@ -36,6 +51,14 @@ int CALLBACK WinMain(
         nullptr);
 
     ShowWindow(hwnd, SW_SHOW);
-    while (true);
+
+    //message pump
+    MSG msg;
+    while (GetMessage(&msg, nullptr, 0, 0) > 0)
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    
     return 0;
 }
