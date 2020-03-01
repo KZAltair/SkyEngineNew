@@ -25,3 +25,13 @@ void Game::ComposeFrame()
 {
 	//Do graphics stuff here
 }
+
+//TODO
+//Add Vector class with template
+//Add Rectangle class with template
+//Add Frametimer
+//Add Surface class
+//Add Animation class
+//Add Text class
+//Add WinGDI to read bitmap files: png, jpeg, bmp with alpha
+//Add sound class with XAUDIO from Chili
