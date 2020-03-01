@@ -1,64 +1,57 @@
-#include <Windows.h>
+#include "GameWindow.h"
 
-
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR pArgs, INT)
 {
-    switch (msg)
-    {
-        case WM_CLOSE:
-        {
-            PostQuitMessage(69);
-            break;
-        }
-    }
+	try
+	{
+		GameWindow wnd(hInst, pArgs);
+		try
+		{
+			//Game theGame(wnd);
+			while (wnd.ProcessMessage())
+			{
+				//theGame.Go();
+			}
+		}
+		catch (const EngineException & e)
+		{
+			const std::wstring eMsg = e.GetFullMessage() +
+				L"\n\nException caught at Windows message loop.";
+			wnd.ShowMessageBox(e.GetExceptionType(), eMsg, MB_ICONERROR);
+		}
+		catch (const std::exception & e)
+		{
+			// need to convert std::exception what() string from narrow to wide string
+			const std::string whatStr(e.what());
+			const std::wstring eMsg = std::wstring(whatStr.begin(), whatStr.end()) +
+				L"\n\nException caught at Windows message loop.";
+			wnd.ShowMessageBox(L"Unhandled STL Exception", eMsg, MB_ICONERROR);
+		}
+		catch (...)
+		{
+			wnd.ShowMessageBox(L"Unhandled Non-STL Exception",
+				L"\n\nException caught at Windows message loop.", MB_ICONERROR);
+		}
+	}
+	catch (const EngineException & e)
+	{
+		const std::wstring eMsg = e.GetFullMessage() +
+			L"\n\nException caught at main window creation.";
+		MessageBox(nullptr, eMsg.c_str(), e.GetExceptionType().c_str(), MB_ICONERROR);
+	}
+	catch (const std::exception & e)
+	{
+		// need to convert std::exception what() string from narrow to wide string
+		const std::string whatStr(e.what());
+		const std::wstring eMsg = std::wstring(whatStr.begin(), whatStr.end()) +
+			L"\n\nException caught at main window creation.";
+		MessageBox(nullptr, eMsg.c_str(), L"Unhandled STL Exception", MB_ICONERROR);
+	}
+	catch (...)
+	{
+		MessageBox(nullptr, L"\n\nException caught at main window creation.",
+			L"Unhandled Non-STL Exception", MB_ICONERROR);
+	}
 
-    return DefWindowProc(hwnd, msg, wParam, lParam);
-}
-
-int CALLBACK WinMain(
-    HINSTANCE hInst,
-    HINSTANCE hPrevInst,
-    LPSTR     lpCmdLine,
-    int       nShowCmd
-)
-{
-    const auto pClassName = "SkyEngine";
-    WNDCLASSEX wc = {0};
-    wc.cbClsExtra = 0;
-    wc.cbSize = sizeof(wc);
-    wc.cbWndExtra = 0;
-    wc.hbrBackground = nullptr;
-    wc.hCursor = nullptr;
-    wc.hIcon = nullptr;
-    wc.hIconSm = nullptr;
-    wc.hInstance = hInst;
-    wc.lpfnWndProc = WndProc;
-    wc.lpszClassName = pClassName;
-    wc.style = CS_OWNDC;
-    wc.lpszMenuName = nullptr;
-
-    RegisterClassEx(&wc);
-
-    HWND hwnd = CreateWindowEx(0, 
-        pClassName,
-        "SkyEngine v0001",
-        WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-        200, 200,
-        800, 600,
-        nullptr,
-        nullptr,
-        hInst,
-        nullptr);
-
-    ShowWindow(hwnd, SW_SHOW);
-
-    //message pump
-    MSG msg;
-    while (GetMessage(&msg, nullptr, 0, 0) > 0)
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-    
-    return 0;
+	return 0;
 }
