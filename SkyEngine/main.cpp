@@ -1,4 +1,6 @@
 #include "GameWindow.h"
+#include "Game.h"
+#include "EngineException.h"
 
 int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR pArgs, INT)
 {
@@ -7,10 +9,10 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR pArgs, INT)
 		GameWindow wnd(hInst, pArgs);
 		try
 		{
-			//Game theGame(wnd);
+			Game theGame(wnd);
 			while (wnd.ProcessMessage())
 			{
-				//theGame.Go();
+				theGame.Go();
 			}
 		}
 		catch (const EngineException & e)

@@ -3,6 +3,8 @@
 #include "WinLib.h"
 #include "Graphics.h"
 #include "EngineException.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 #include <string>
 
 
@@ -43,6 +45,9 @@ private:
 	static LRESULT WINAPI _HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT WINAPI _HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+public:
+	Keyboard kbd;
+	Mouse mouse;
 
 private:
 	static constexpr const wchar_t* pWinClassName = L"Sky Engine Window";

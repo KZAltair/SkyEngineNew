@@ -1,4 +1,5 @@
 #include "GameWindow.h"
+#include "Graphics.h"
 #include <assert.h>
 
 GameWindow::GameWindow(HINSTANCE hInstance, wchar_t* pArgs)
@@ -23,16 +24,20 @@ GameWindow::GameWindow(HINSTANCE hInstance, wchar_t* pArgs)
 
     RegisterClassEx(&wc);
 
+    // create window & get hWnd
+    RECT wr;
+    wr.left = 350;
+    wr.right = Graphics::ScreenWidth + wr.left;
+    wr.top = 100;
+    wr.bottom = Graphics::ScreenHeight + wr.top;
+    AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+
     hWnd = CreateWindowEx(0,
         pWinClassName,
         L"SkyEngine v0001",
         WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-        200, 200,
-        800, 600,
-        nullptr,
-        nullptr,
-        hInst,
-        this);
+        wr.left, wr.top, wr.right - wr.left, wr.bottom - wr.top,
+        nullptr, nullptr, hInst, this);
 
     ShowWindow(hWnd, SW_SHOW);
     UpdateWindow(hWnd);
@@ -97,11 +102,101 @@ LRESULT GameWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-	    case WM_DESTROY:
-        {
-            PostQuitMessage(0);
-            break;
-        }
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	case WM_KILLFOCUS:
+		kbd.ClearState();
+		break;
+
+		// ************ KEYBOARD MESSAGES ************ //
+	case WM_KEYDOWN:
+		if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) // no thank you on the autorepeat
+		{
+			kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
+		}
+		break;
+	case WM_KEYUP:
+		kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
+		break;
+	case WM_CHAR:
+		kbd.OnChar(static_cast<unsigned char>(wParam));
+		break;
+		// ************ END KEYBOARD MESSAGES ************ //
+
+		// ************ MOUSE MESSAGES ************ //
+	case WM_MOUSEMOVE:
+	{
+		POINTS pt = MAKEPOINTS(lParam);
+		if (pt.x > 0 && pt.x < Graphics::ScreenWidth && pt.y > 0 && pt.y < Graphics::ScreenHeight)
+		{
+			mouse.OnMouseMove(pt.x, pt.y);
+			if (!mouse.IsInWindow())
+			{
+				SetCapture(hWnd);
+				mouse.OnMouseEnter();
+			}
+		}
+		else
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON))
+			{
+				pt.x = std::max(short(0), pt.x);
+				pt.x = std::min(short(Graphics::ScreenWidth - 1), pt.x);
+				pt.y = std::max(short(0), pt.y);
+				pt.y = std::min(short(Graphics::ScreenHeight - 1), pt.y);
+				mouse.OnMouseMove(pt.x, pt.y);
+			}
+			else
+			{
+				ReleaseCapture();
+				mouse.OnMouseLeave();
+				mouse.OnLeftReleased(pt.x, pt.y);
+				mouse.OnRightReleased(pt.x, pt.y);
+			}
+		}
+		break;
 	}
+	case WM_LBUTTONDOWN:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnLeftPressed(pt.x, pt.y);
+		SetForegroundWindow(hWnd);
+		break;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnRightPressed(pt.x, pt.y);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnLeftReleased(pt.x, pt.y);
+		break;
+	}
+	case WM_RBUTTONUP:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnRightReleased(pt.x, pt.y);
+		break;
+	}
+	case WM_MOUSEWHEEL:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+		{
+			mouse.OnWheelUp(pt.x, pt.y);
+		}
+		else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
+		{
+			mouse.OnWheelDown(pt.x, pt.y);
+		}
+		break;
+	}
+	// ************ END MOUSE MESSAGES ************ //
+	}
+
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
