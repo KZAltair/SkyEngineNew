@@ -11,12 +11,12 @@ Game::Game(GameWindow& wnd)
 void Game::Go()
 {
 	gfx.BeginFrame();
-	UpdateModel();
+	Update();
 	ComposeFrame();
 	gfx.EndFrame();
 }
 
-void Game::UpdateModel()
+void Game::Update()
 {
 	//Do update game stuff here
 }
