@@ -2,6 +2,8 @@
 
 #include "Graphics.h"
 #include "Surface.h"
+#include "Player.h"
+#include "FrameTimer.h"
 
 class Game
 {
@@ -19,8 +21,9 @@ private:
 private:
 	GameWindow& wnd;
 	Graphics gfx;
+	FrameTimer ft;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
-	Surface surf;
+	Player p;
 };

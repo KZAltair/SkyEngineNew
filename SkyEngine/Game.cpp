@@ -5,7 +5,7 @@ Game::Game(GameWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	surf(L"Images\\test01.png")
+	p({0,32,0,32})
 {
 }
 
@@ -19,10 +19,14 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	float dt = ft.Mark();
 	//Do update game stuff here
+	p.Update(dt, wnd.kbd);
+
 }
 
 void Game::ComposeFrame()
 {
 	//Do graphics stuff here
+	p.Draw(gfx);
 }
