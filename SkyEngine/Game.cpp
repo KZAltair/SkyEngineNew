@@ -4,7 +4,8 @@
 Game::Game(GameWindow& wnd)
 	:
 	wnd(wnd),
-	gfx(wnd)
+	gfx(wnd),
+	surf(L"Images\\test01.png")
 {
 }
 
@@ -24,4 +25,5 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	//Do graphics stuff here
+	gfx.DrawSp(100, 100, surf);
 }

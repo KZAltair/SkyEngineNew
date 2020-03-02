@@ -1,9 +1,11 @@
 #include "GameWindow.h"
 #include "Game.h"
 #include "EngineException.h"
+#include "GDIPlusManager.h"
 
 int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR pArgs, INT)
 {
+	GDIPlusManager gdipMan;
 	try
 	{
 		GameWindow wnd(hInst, pArgs);

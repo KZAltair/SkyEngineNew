@@ -10,9 +10,8 @@ class Surface
 public:
 	Surface(const std::wstring& filename);
 	Surface(int width, int height);
-	Surface(const Surface&) = default;
-	Surface& operator=(const Surface& rhs) = default;
-	Surface() = default;
+	Surface(const Surface&);
+	Surface& operator=(const Surface& rhs);
 	~Surface();
 
 	void PutPixel(int x, int y, Color c);
