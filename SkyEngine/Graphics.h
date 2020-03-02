@@ -54,6 +54,18 @@ public:
 			}
 		}
 	}
+	void DrawSp(int x, int y, RectI srcRect, const Surface& s)
+	{
+		const int width = srcRect.right - srcRect.left;
+		const int height = srcRect.bottom - srcRect.top;
+		for (int sy = 0; sy < height; sy++)
+		{
+			for (int sx = 0; sx < width; sx++)
+			{
+				PutPixel(x + sx, y + sy, s.GetPixel(sx, sy));
+			}
+		}
+	}
 	template<typename E>
 	void DrawSprite(int x, int y, const Surface& s, E effect)
 	{

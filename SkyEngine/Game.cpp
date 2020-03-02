@@ -25,5 +25,5 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	//Do graphics stuff here
-	gfx.DrawSp(100, 100, surf);
+	gfx.DrawSp(100, 100, {0,32,0,32}, surf);
 }
