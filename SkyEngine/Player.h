@@ -14,6 +14,9 @@ private:
 	Surface surf;
 	RectI rect;
 	Vec2 pos = { 0.0f, 0.0f };
-	Vec2 vel;
-	float maxSpeed = 50.0f;
+	Vec2 dir = {0.0f, 0.0f};
+	Vec2 vel = { 0.0f, 0.0f };
+	float gravity = 150.0f;
+	float maxSpeed = 100.0f;
+	float airFriction = 100.0f;
 };

@@ -22,14 +22,43 @@ void Player::Draw(Graphics& gfx)
 
 void Player::Update(float dt, const Keyboard& kbd)
 {
-	vel = { 0.0f, 0.0f };
 	if (kbd.KeyIsPressed(VK_LEFT))
 	{
-		vel.x = -1.0f;
+		vel.x = -maxSpeed;
 	}
 	if (kbd.KeyIsPressed(VK_RIGHT))
 	{
-		vel.x = 1.0f;
+		vel.x = maxSpeed;
 	}
-	pos.x += vel.x * maxSpeed * dt;
+	if (kbd.KeyIsPressed(VK_SPACE))
+	{
+		if (pos.y >= Graphics::ScreenHeight / 2)
+		{
+			vel.y = -maxSpeed;
+		}
+	}
+	pos.x += vel.x * dt + 1.0f / gravity * dt * dt;
+	pos.y += vel.y * dt + 1.0f / gravity * dt * dt;
+	if (pos.y > Graphics::ScreenHeight / 2)
+	{
+		vel.y = 0.0f;
+	}
+	else
+	{
+		vel.y += gravity * dt;
+	}
+	if (vel.x > 0.0f)
+	{
+		vel.x -= airFriction * dt;
+	}
+	else if (vel.x < 0.0f)
+	{
+		vel.x += airFriction * dt;
+	}
+	else
+	{
+		vel.x = 0.0f;
+	}
+	
+	
 }
