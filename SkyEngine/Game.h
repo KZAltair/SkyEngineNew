@@ -4,6 +4,7 @@
 #include "Surface.h"
 #include "Player.h"
 #include "FrameTimer.h"
+#include "Brick.h"
 
 class Game
 {
@@ -26,4 +27,7 @@ private:
 	/*  User Variables              */
 	/********************************/
 	Player p;
+	Brick b;
+	Brick c;
+	Brick d;
 };
