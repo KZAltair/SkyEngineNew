@@ -5,7 +5,7 @@ Game::Game(GameWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	surf(L"Images\\test01.png")
+	brick({50.0f, 50.0f})
 {
 }
 
@@ -25,6 +25,7 @@ void Game::Update()
 void Game::ComposeFrame()
 {
 	//Do graphics stuff here
+	brick.Draw(gfx, Color(120, 120, 120));
 }
 
 //TODO
