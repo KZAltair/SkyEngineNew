@@ -4,7 +4,8 @@
 Game::Game(GameWindow& wnd)
 	:
 	wnd(wnd),
-	gfx(wnd)
+	gfx(wnd),
+	surf(L"Images\\test01.png")
 {
 }
 

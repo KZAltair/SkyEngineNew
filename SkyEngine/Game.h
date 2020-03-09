@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Graphics.h"
+#include "Surface.h"
 
 class Game
 {
@@ -21,4 +22,5 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
+	Surface surf;
 };
