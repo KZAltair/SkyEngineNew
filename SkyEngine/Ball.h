@@ -18,5 +18,5 @@ private:
 	Vec2 pos;
 	Vec2 vel;
 	Surface surf;
-	static constexpr float radius = 20.0f;
+	static constexpr float radius = 7.0f;
 };

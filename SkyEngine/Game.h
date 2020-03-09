@@ -4,6 +4,7 @@
 #include "Brick.h"
 #include "Ball.h"
 #include "FrameTimer.h"
+#include "Paddle.h"
 
 class Game
 {
@@ -22,10 +23,11 @@ private:
 	GameWindow& wnd;
 	Graphics gfx;
 	FrameTimer ft;
+	RectF screenRect;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
 	Brick brick;
 	Ball ball;
-	RectF screenRect;
+	Paddle paddle;
 };
