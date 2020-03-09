@@ -66,6 +66,16 @@ public:
 			}
 		}
 	}
+	void DrawSp(const RectF srcRect, const Surface& s)
+	{
+		for (int sy = 0; sy < (int)srcRect.GetHeight(); sy++)
+		{
+			for (int sx = 0; sx < (int)srcRect.GetWidth(); sx++)
+			{
+				PutPixel((int)srcRect.left + sx, (int)srcRect.top + sy, s.GetPixel(sx, sy));
+			}
+		}
+	}
 	void DrawRect(int in_x, int in_y, int in_width, int in_height, Color c)
 	{
 		for (int y = in_y; y < in_y + in_height; y++)

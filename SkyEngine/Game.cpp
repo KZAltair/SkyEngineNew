@@ -5,7 +5,9 @@ Game::Game(GameWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	brick({50.0f, 50.0f})
+	brick({50.0f, 50.0f}),
+	ball(Vec2(100.0f, 100.0f), Vec2(300.0f, 300.0f)),
+	screenRect(0.0f,(float)Graphics::ScreenWidth, 0.0f, (float)Graphics::ScreenHeight)
 {
 }
 
@@ -20,12 +22,17 @@ void Game::Go()
 void Game::Update()
 {
 	//Do update game stuff here
+	float dt = ft.Mark();
+	ball.Update(dt);
+	ball.DoCollision(screenRect);
+
 }
 
 void Game::ComposeFrame()
 {
 	//Do graphics stuff here
 	brick.Draw(gfx, Color(120, 120, 120));
+	ball.Draw(gfx);
 }
 
 //TODO

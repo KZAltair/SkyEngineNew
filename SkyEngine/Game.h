@@ -2,6 +2,8 @@
 
 #include "Graphics.h"
 #include "Brick.h"
+#include "Ball.h"
+#include "FrameTimer.h"
 
 class Game
 {
@@ -19,8 +21,11 @@ private:
 private:
 	GameWindow& wnd;
 	Graphics gfx;
+	FrameTimer ft;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
 	Brick brick;
+	Ball ball;
+	RectF screenRect;
 };
