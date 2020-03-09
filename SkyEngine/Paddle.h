@@ -3,6 +3,7 @@
 #include "Rect.h"
 #include "Graphics.h"
 #include "Mouse.h"
+#include "Ball.h"
 
 class Paddle
 {
@@ -10,7 +11,7 @@ public:
 	Paddle(const Vec2& pos);
 	void Draw(Graphics& gfx);
 	void Update(const Mouse& mouse, float dt);
-	bool DoBallCollision(const RectF& ballRect);
+	bool DoBallCollision(Ball& ball);
 	bool DoWallCollision(const RectF& walls);
 	RectF GetRect() const;
 

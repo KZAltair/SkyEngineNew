@@ -16,9 +16,30 @@ void Paddle::Update(const Mouse& mouse, float dt)
 	pos.x = mouse.GetPosX();
 }
 
-bool Paddle::DoBallCollision(const RectF& ballRect)
+bool Paddle::DoBallCollision(Ball& ball)
 {
-	return false;
+	bool collided = false;
+	const RectF rect = GetRect();
+	const RectF ballRect = ball.GetRect();
+	if (ballRect.IsOverlappingWith(rect))
+	{
+		if (ballRect.bottom > rect.top)
+		{
+			ball.ReboundY();
+			collided = true;
+		}
+		if (ballRect.left < rect.right)
+		{
+			ball.ReboundX();
+			collided = true;
+		}
+		else if (ballRect.right > rect.left)
+		{
+			ball.ReboundX();
+			collided = true;
+		}
+	}
+	return collided;
 }
 
 bool Paddle::DoWallCollision(const RectF& walls)
@@ -40,5 +61,6 @@ bool Paddle::DoWallCollision(const RectF& walls)
 
 RectF Paddle::GetRect() const
 {
-	return RectF::FromCenter(pos, width, height);
+	const RectF rect = RectF(pos, width, height);
+	return rect;
 }

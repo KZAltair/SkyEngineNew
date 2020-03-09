@@ -28,6 +28,7 @@ void Game::Update()
 	ball.DoCollision(screenRect);
 	paddle.Update(wnd.mouse, dt);
 	paddle.DoWallCollision(screenRect);
+	paddle.DoBallCollision(ball);
 
 }
 
