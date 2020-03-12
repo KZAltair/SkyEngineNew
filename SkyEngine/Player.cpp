@@ -43,18 +43,29 @@ bool Player::DoCollision(const Platform& p)
 	RectF rect = GetRect();
 	if (rect.IsOverlappingWith(p.GetRect()))
 	{
-		if (rect.right > p.GetRect().left&& rect.right < p.GetRect().right)
+		if (prevPos.x + width <= p.GetRect().left)
 		{
 			pos.x -= rect.right - p.GetRect().left;
 			collided = true;
 		}
-		else if (rect.left < p.GetRect().right && rect.left > p.GetRect().left)
+		else if (prevPos.x >= p.GetRect().right)
 		{
 			pos.x += p.GetRect().right - rect.left;
 			collided = true;
 		}
+		else if (prevPos.x + width >= p.GetRect().left && prevPos.x <= p.GetRect().right && prevPos.y + height <= p.GetRect().top)
+		{
+			pos.y -= rect.bottom - p.GetRect().top;
+			collided = true;
+		}
+		else if (prevPos.x + width >= p.GetRect().left && prevPos.x <= p.GetRect().right && prevPos.y >= p.GetRect().bottom)
+		{
+			pos.y += p.GetRect().bottom - rect.top;
+			collided = true;
+		}
 		
 	}
+	prevPos = pos;
 	return collided;
 }
 

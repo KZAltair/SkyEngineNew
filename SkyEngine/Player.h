@@ -19,6 +19,7 @@ public:
 private:
 	Vec2 pos;
 	Vec2 vel;
+	Vec2 prevPos;
 	float speed;
 	int width;
 	int height;
