@@ -4,6 +4,7 @@
 #include "Platform.h"
 #include "Player.h"
 #include "FrameTimer.h"
+#include <vector>
 
 class Game
 {
@@ -14,7 +15,7 @@ public:
 	void Go();
 private:
 	void ComposeFrame();
-	void Update();
+	void Update(float dt);
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -25,6 +26,6 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
-	Platform platform;
+	std::vector<Platform> platforms;
 	Player p;
 };

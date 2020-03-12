@@ -8,6 +8,7 @@ Player::Player(const Vec2& pos, float speed, int width, int height, Color c)
 	height(height),
 	color(c)
 {
+	vel = { 0.0f, 0.0f };
 }
 
 void Player::Draw(Graphics& gfx)
@@ -17,7 +18,11 @@ void Player::Draw(Graphics& gfx)
 
 void Player::Update(const Keyboard& kbd, float dt)
 {
-	vel = { 0.0f, 0.0f };
+	vel.x = 0.0f;
+	if (vel.y >= jumpSpeed)
+	{
+		vel.y = jumpSpeed;
+	}
 	if (kbd.KeyIsPressed(VK_LEFT))
 	{
 		vel.x = -1.0f * speed;
@@ -34,15 +39,36 @@ void Player::Update(const Keyboard& kbd, float dt)
 	{
 		vel.y = 1.0f * speed;
 	}
+	if (kbd.KeyIsPressed(VK_SPACE))
+	{
+		isPressed = true;
+	}
+	if (isPressed)
+	{
+		if (vel.y != 0.0f)
+		{
+			vel.y += gravity;
+		}
+		else
+		{
+			vel.y = -1.0f * jumpSpeed;
+		}
+	}
+	else
+	{
+		vel.y += gravity;
+	}
+
 	pos += vel * dt;
 }
 
-bool Player::DoCollision(const Platform& p)
+/*bool Player::DoCollision(const Platform& p)
 {
 	bool collided = false;
 	RectF rect = GetRect();
 	if (rect.IsOverlappingWith(p.GetRect()))
 	{
+		OutputDebugStringA("Collided\n");
 		if (prevPos.x + width <= p.GetRect().left)
 		{
 			pos.x -= rect.right - p.GetRect().left;
@@ -56,6 +82,8 @@ bool Player::DoCollision(const Platform& p)
 		else if (prevPos.x + width >= p.GetRect().left && prevPos.x <= p.GetRect().right && prevPos.y + height <= p.GetRect().top)
 		{
 			pos.y -= rect.bottom - p.GetRect().top;
+			isPressed = false;
+			vel.y = 0.0f;
 			collided = true;
 		}
 		else if (prevPos.x + width >= p.GetRect().left && prevPos.x <= p.GetRect().right && prevPos.y >= p.GetRect().bottom)
@@ -67,6 +95,58 @@ bool Player::DoCollision(const Platform& p)
 	}
 	prevPos = pos;
 	return collided;
+}
+*/
+
+void Player::AdjustLeftPosition(const RectF& p)
+{
+	RectF rect = GetRect();
+	pos.x -= rect.right - p.left;
+}
+
+void Player::AdjustRightPosition(const RectF& p)
+{
+	RectF rect = GetRect();
+	pos.x += p.right - rect.left;
+}
+
+void Player::AdjustTopPosition(const RectF& p)
+{
+	RectF rect = GetRect();
+	pos.y -= rect.bottom - p.top;
+	isPressed = false;
+	vel.y = 0.0f;
+}
+
+void Player::AdjustBottomPosition(const RectF& p)
+{
+	RectF rect = GetRect();
+	pos.y += p.bottom - rect.top;
+}
+
+Vec2 Player::GetPosition() const
+{
+	return pos;
+}
+
+Vec2 Player::GetVelocity() const
+{
+	return vel;
+}
+
+int Player::GetWidth() const
+{
+	return width;
+}
+
+int Player::GetHeight() const
+{
+	return height;
+}
+
+Vec2 Player::GetPrevPos() const
+{
+	return prevPos;
 }
 
 RectF Player::GetRect() const

@@ -14,6 +14,42 @@ void Platform::Draw(Graphics& gfx)
 	gfx.DrawRect(pos.x, pos.y, width, height, color);
 }
 
+bool Platform::DoCollision(Player& p)
+{
+	bool collided = false;
+	RectF rect = GetRect();
+	RectF playerRect = p.GetRect();
+	if (playerRect.IsOverlappingWith(rect))
+	{
+			if ((p.prevPos.x + p.GetWidth() - 1) <= rect.left)
+			{
+				p.AdjustLeftPosition(rect);
+				collided = true;
+			}
+			else if ((p.prevPos.x + 1) >= rect.right)
+			{
+				p.AdjustRightPosition(rect);
+				collided = true;
+			}
+			else if (p.prevPos.x + p.GetWidth() >= rect.left && p.prevPos.x <= rect.right && (p.prevPos.y + p.GetHeight()-1) <= rect.top)
+			{
+				p.AdjustTopPosition(rect);
+				p.isPressed = false;
+				p.vel.y = 0.0f;
+				collided = true;
+			}
+			else if (p.prevPos.x + p.GetWidth() >= rect.left && p.prevPos.x <= rect.right && (p.prevPos.y + 1) >= rect.bottom)
+			{
+				p.AdjustBottomPosition(rect);
+				collided = true;
+			}
+
+		}
+		p.prevPos = p.pos;
+
+	return collided;
+}
+
 RectF Platform::GetRect() const
 {
 	return RectF(pos, width, height);
