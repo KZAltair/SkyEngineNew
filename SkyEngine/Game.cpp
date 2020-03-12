@@ -5,7 +5,8 @@ Game::Game(GameWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	surf(L"Images\\test01.png")
+	platform(Vec2(200.0f, 200.0f), 60, 60, Color(255,120,100)),
+	p(Vec2(100.0f, 50.0f), 100.0f, 30, 30, Color(120,120,120))
 {
 }
 
@@ -20,11 +21,16 @@ void Game::Go()
 void Game::Update()
 {
 	//Do update game stuff here
+	float dt = ft.Mark();
+	p.Update(wnd.kbd, dt);
+	p.DoCollision(platform);
 }
 
 void Game::ComposeFrame()
 {
 	//Do graphics stuff here
+	platform.Draw(gfx);
+	p.Draw(gfx);
 }
 
 //TODO
