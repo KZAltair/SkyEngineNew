@@ -21,24 +21,24 @@ bool Platform::DoCollision(Player& p)
 	RectF playerRect = p.GetRect();
 	if (playerRect.IsOverlappingWith(rect))
 	{
-			if ((p.prevPos.x + p.GetWidth() - 1) <= rect.left)
+			if ((p.prevPos.x + p.GetWidth() - 5) <= rect.left)
 			{
 				p.AdjustLeftPosition(rect);
 				collided = true;
 			}
-			else if ((p.prevPos.x + 1) >= rect.right)
+			else if ((p.prevPos.x + 5) >= rect.right)
 			{
 				p.AdjustRightPosition(rect);
 				collided = true;
 			}
-			else if (p.prevPos.x + p.GetWidth() >= rect.left && p.prevPos.x <= rect.right && (p.prevPos.y + p.GetHeight()-1) <= rect.top)
+			else if (p.prevPos.x + p.GetWidth() >= rect.left && p.prevPos.x <= rect.right && (p.prevPos.y + p.GetHeight()-5) <= rect.top)
 			{
 				p.AdjustTopPosition(rect);
 				p.isPressed = false;
 				p.vel.y = 0.0f;
 				collided = true;
 			}
-			else if (p.prevPos.x + p.GetWidth() >= rect.left && p.prevPos.x <= rect.right && (p.prevPos.y + 1) >= rect.bottom)
+			else if (p.prevPos.x + p.GetWidth() >= rect.left && p.prevPos.x <= rect.right && (p.prevPos.y + 5) >= rect.bottom)
 			{
 				p.AdjustBottomPosition(rect);
 				collided = true;
