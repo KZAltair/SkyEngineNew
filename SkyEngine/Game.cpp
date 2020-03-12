@@ -7,11 +7,22 @@ Game::Game(GameWindow& wnd)
 	gfx(wnd),
 	p(Vec2(100.0f, 50.0f), 200.0f, 30, 30, Color(120,120,120))
 {
-	Vec2 offset = { 100.0f, 400.0f };
-	for (int i = 0; i < 4; ++i)
+	Vec2 offset = { 0.0f, 0.0f };
+	for (int i = 0; i < 5; ++i)
 	{
+		
+		if ((i % 2) == 0)
+		{
+			offset.x += 120.0f;
+			offset.y = 300.0f;
+		}
+		else
+		{
+			offset.x += 120.0f;
+			offset.y = 360.0f;
+		}
 		platforms.push_back(Platform(offset, 60, 60, Color(255, 120, 100)));
-		offset.x += 150.0f;
+		
 
 	}
 }
