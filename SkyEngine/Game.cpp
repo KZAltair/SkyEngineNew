@@ -5,20 +5,20 @@ Game::Game(GameWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	p(Vec2(100.0f, 50.0f), 200.0f, 30, 30, Color(120,120,120))
+	p(Vec2(150.0f, 50.0f), 200.0f, 30, 30, Color(120,120,120))
 {
 	Vec2 offset = { 0.0f, 300.0f };
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 30; ++i)
 	{
 		
 		if ((i % 2) == 0)
 		{
-			offset.x += 130.0f;
+			offset.x += 60.0f;
 			offset.y = 300.0f;
 		}
 		else
 		{
-			offset.x += 130.0f;
+			offset.x += 60.0f;
 			offset.y = 360.0f;
 		}
 		platforms.emplace_back(Platform(offset, {0.0f, 60.0f, 0.0f, 60.0f}, gfx.GetScreenRect()));
@@ -45,10 +45,13 @@ void Game::Go()
 void Game::Update(float dt)
 {
 	//Do update game stuff here
+	RectI rect = gfx.GetScreenRect();
 	p.Update(wnd.kbd, dt);
 	for (Platform& plat : platforms)
 	{
+		plat.Update(dt, p, rect);
 		plat.DoCollision(p);
+
 	}
 }
 

@@ -13,6 +13,7 @@ public:
 	void Draw(Graphics& gfx);
 	void DrawSprite(Graphics& gfx);
 	bool DoCollision(Player& p);
+	void Update(float dt, const Player& p, RectI& rect);
 	RectF GetRect() const;
 	RectF GetSpriteRect() const;
 	Vec2 GetCenter() const;
@@ -25,4 +26,6 @@ private:
 	Color color;
 	RectF rect;
 	RectI clip;
+	static constexpr int cameraMovementStart = 10;
+	static constexpr float cameraMovementSpeed = 200.0f;
 };

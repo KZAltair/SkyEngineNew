@@ -67,6 +67,14 @@ bool Platform::DoCollision(Player& p)
 	return collided;
 }
 
+void Platform::Update(float dt, const Player& p, RectI& rect)
+{
+	if (p.GetRect().right > rect.GetWidth() / 2)
+	{
+		pos.x -= cameraMovementSpeed * dt;
+	}
+}
+
 RectF Platform::GetRect() const
 {
 	return RectF(pos, width, height);
