@@ -5,7 +5,19 @@ Platform::Platform(const Vec2& pos, int width, int height, Color c)
 	pos(pos),
 	width(width),
 	height(height),
-	color(c)
+	color(c),
+	surf(L"Images\\brick.png"),
+	rect(rect),
+	clip(clip)
+{
+}
+
+Platform::Platform(const Vec2& pos, RectF srcRect, const RectI& clip)
+	:
+	pos(pos),
+	rect(srcRect),
+	clip(clip),
+	surf(L"Images\\brick.png")
 {
 }
 
@@ -14,10 +26,15 @@ void Platform::Draw(Graphics& gfx)
 	gfx.DrawRect(pos.x, pos.y, width, height, color);
 }
 
+void Platform::DrawSprite(Graphics& gfx)
+{
+	gfx.DrawSprite(pos.x, pos.y, rect, clip, surf);
+}
+
 bool Platform::DoCollision(Player& p)
 {
 	bool collided = false;
-	RectF rect = GetRect();
+	RectF rect = GetSpriteRect();
 	RectF playerRect = p.GetRect();
 	if (playerRect.IsOverlappingWith(rect))
 	{
@@ -53,6 +70,11 @@ bool Platform::DoCollision(Player& p)
 RectF Platform::GetRect() const
 {
 	return RectF(pos, width, height);
+}
+
+RectF Platform::GetSpriteRect() const
+{
+	return RectF(pos, rect.GetWidth(), rect.GetHeight());
 }
 
 Vec2 Platform::GetCenter() const
